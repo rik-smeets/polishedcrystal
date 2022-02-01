@@ -2072,4 +2072,32 @@
 	wildmon 31, VENOMOTH
 	end_grass_wildmons
 
+	def_grass_wildmons VIOLET_OUTSKIRTS
+	db 1 percent, 1 percent, 10 percent ; encounter rates: morn/day/nite
+	; morn
+	wildmon 22, RATTATA
+	wildmon 23, RATICATE
+	wildmon 22, GLIGAR
+	wildmon 23, GLIGAR
+	wildmon 20, MURKROW
+	wildmon 21, MURKROW
+	wildmon 22, MURKROW
+	; day
+	wildmon 22, RATTATA
+	wildmon 23, RATICATE
+	wildmon 22, GLIGAR
+	wildmon 23, GLIGAR
+	wildmon 21, MURKROW
+	wildmon 22, MURKROW
+	wildmon 22, MURKROW
+	; nite
+	wildmon 24, MURKROW
+	wildmon 24, GLIGAR
+	wildmon 24, GASTLY
+	wildmon 25, GASTLY
+	wildmon 26, HAUNTER
+	wildmon 25, MISDREAVUS
+	wildmon 26, MISDREAVUS
+	end_grass_wildmons
+
 	db -1 ; end
