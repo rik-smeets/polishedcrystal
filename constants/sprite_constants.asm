@@ -193,9 +193,10 @@
 	const SPRITE_ELECTRIC_FENCE_RIGHT ; bd
 	const SPRITE_SAILBOAT ; be
 	const SPRITE_ICE_BOULDER ; bf
+	const SPRITE_CHANNELER ; c0
 NUM_OVERWORLD_SPRITES EQU const_value - 1
 
-	; c0-ef = 48 unused
+	; c1-ef = 47 unused
 
 ; special GetMonSprite values (see engine/overworld/overworld.asm)
 	const_next $f0
