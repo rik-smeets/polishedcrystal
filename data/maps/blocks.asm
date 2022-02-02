@@ -289,6 +289,10 @@ SECTION "VioletOutskirts_BlockData", ROMX
 VioletOutskirts_BlockData:
 	INCBIN "maps/VioletOutskirts.ablk.lz"
 
+SECTION "AbandonedHouse_BlockData", ROMX
+VioletOutskirtsAbandonedHouse_BlockData:
+	INCBIN "maps/AbandonedHouse.ablk.lz"
+
 SECTION "RuinsOfAlphOutside_BlockData", ROMX
 RuinsOfAlphOutside_BlockData:
 	INCBIN "maps/RuinsOfAlphOutside.ablk.lz"

@@ -5,6 +5,7 @@ VioletOutskirts_MapScriptHeader:
 	callback MAPCALLBACK_TILES, VioletOutskirtsAvalanche
 
 	def_warp_events
+	warp_event  1, 9, VIOLET_OUTSKIRTS_ABANDONED_HOUSE, 1
 
 	def_coord_events
 
