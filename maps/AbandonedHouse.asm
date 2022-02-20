@@ -7,7 +7,12 @@ VioletOutskirtsAbandonedHouse_MapScriptHeader:
 	def_warp_events
 	warp_event  3,  7, VIOLET_OUTSKIRTS, 1
 	warp_event  4,  7, VIOLET_OUTSKIRTS, 1
-	warp_event  5,  4, SOUL_HOUSE_B1F, 1
+	warp_event  2,  2, SOUL_HOUSE_B1F, 1
+	warp_event  3,  2, SOUL_HOUSE_B1F, 1
+	warp_event  4,  2, SOUL_HOUSE_B1F, 1
+	warp_event  4,  2, SOUL_HOUSE_B1F, 1
+	warp_event  6,  1, SOUL_HOUSE_B1F, 1
+	warp_event  7,  1, SOUL_HOUSE_B1F, 1
 
 	def_coord_events
 
@@ -126,10 +131,13 @@ MakeMisdreavusAppear:
 	showtext MisdreavusContinuePlayingText
 	end
 .finished
-	changeblock 4, 4, $39 ; stairs
-	reloadmappart
-	playsound SFX_EXIT_BUILDING
-	waitsfx
+	readvar VAR_XCOORD
+	ifequal 2, .hole_left_2_2
+	ifequal 3, .hole_right_2_2
+	ifequal 4, .hole_left_4_2
+	ifequal 6, .hole_left_6_0
+	changeblock 6, 0, $47 ; hole right below picture on wall
+	sjump .falling
 	; showemote EMOTE_HEART, HIDDEN_MISDREAVUS, 15
 	; showtext MisdreavusFinishedPlayingText
 	; cry MISDREAVUS
@@ -144,6 +152,31 @@ MakeMisdreavusAppear:
 	; startbattle
 	; disappear HIDDEN_MISDREAVUS
 	; reloadmapafterbattle
+	end
+.hole_left_2_2
+	changeblock 2, 2, $45 ; hole top left
+	sjump .falling
+.hole_right_2_2
+	changeblock 2, 2, $44 ; hole top right
+	sjump .falling
+.hole_left_4_2
+	changeblock 4, 2, $45 ; hole top left
+	sjump .falling
+.hole_left_6_0
+	changeblock 6, 0, $46 ; hole top left below picture on wall
+.falling
+	special Special_FadeOutMusic
+	pause 15
+	showemote EMOTE_SHOCK, PLAYER, 15
+	playsound SFX_ENTER_DOOR
+	waitsfx
+	reloadmappart
+	pause 15
+	applyonemovement PLAYER, skyfall_top
+	playsound SFX_KINESIS
+	showemote EMOTE_HAPPY, HIDDEN_MISDREAVUS, 30
+	pause 15
+	warpcheck
 	end
 .misdreavus_leaves
 	closetext
