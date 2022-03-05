@@ -18,12 +18,12 @@ VioletOutskirtsAbandonedHouse_MapScriptHeader:
 	def_coord_events
 
 	def_bg_events
-	bg_event  6,  0, BGEVENT_READ, FamilyPhotoScript
+	bg_event  6,  0, BGEVENT_JUMPTEXT, FamilyPhotoText
 	bg_event  7,  0, BGEVENT_READ, FamilyPhotoScript
-	bg_event  3,  1, BGEVENT_READ, FireplaceScript
+	bg_event  3,  1, BGEVENT_JUMPTEXT, FireplaceText
 	bg_event  4,  1, BGEVENT_READ, FireplaceScript
 	bg_event  2,  1, BGEVENT_READ, WoodenLogScript
-	bg_event 0,  1, BGEVENT_JUMPTEXT, AncientIncenseBurnerText
+	bg_event 0,  1, BGEVENT_READ, AncientIncenseBurnerScript
 	bg_event 1,  1, BGEVENT_JUMPTEXT, OldBooksText
 	bg_event  5,  1, BGEVENT_JUMPTEXT, WoodenLogText
 
@@ -44,12 +44,12 @@ SenseMischievousPresence:
 
 VioletOutskirtsMisdreavusCallback:
 	disappear HIDDEN_MISDREAVUS
+	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_COMPLETED
+	iftrue AddHoleInFloor
 	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_STARTED
 	iftrue .end
 	setevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_STARTED
 	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_FIREPLACE
-	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_PHOTO
-	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_WOOD
 .end
 	endcallback
 
@@ -61,7 +61,21 @@ WoodenLogScript:
 	iffalse .done
 	moveobject HIDDEN_MISDREAVUS, 2,1
 	clearevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_WOOD
-	sjump MakeMisdreavusAppear
+	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_PHOTO
+	sjump HiddenMisdreavusInteraction
+.done
+	end
+
+AncientIncenseBurnerScript:
+	showtext AncientIncenseBurnerText
+	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_STARTED
+	iffalse .done
+	checkevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_INCENSE_BURNER
+	iffalse .done
+	moveobject HIDDEN_MISDREAVUS, 0, 1
+	clearevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_INCENSE_BURNER
+	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_WOOD
+	sjump HiddenMisdreavusInteraction
 .done
 	end
 
@@ -71,15 +85,10 @@ FireplaceScript:
 	iffalse .done
 	checkevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_FIREPLACE
 	iffalse .done
-	readvar VAR_XCOORD
-	ifequal 3, .move
 	moveobject HIDDEN_MISDREAVUS, 4, 1
-	sjump .continue
-.move
-	moveobject HIDDEN_MISDREAVUS, 3, 1
-.continue
 	clearevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_FIREPLACE
-	sjump MakeMisdreavusAppear
+	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_INCENSE_BURNER
+	sjump HiddenMisdreavusInteraction
 .done
 	end
 
@@ -89,19 +98,14 @@ FamilyPhotoScript:
 	iffalse .done
 	checkevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_PHOTO
 	iffalse .done
-	readvar VAR_XCOORD
-	ifequal 6, .move
 	moveobject HIDDEN_MISDREAVUS, 7, 0
-	sjump .continue
-.move
-	moveobject HIDDEN_MISDREAVUS, 6, 0
-.continue
 	clearevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_PHOTO
-	sjump MakeMisdreavusAppear
+	setevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_COMPLETED
+	sjump HiddenMisdreavusInteraction
 .done
 	end
 
-MakeMisdreavusAppear:
+HiddenMisdreavusInteraction:
 	special Special_FadeOutMusic
 	pause 20
 	showemote EMOTE_SHOCK, PLAYER, 15
@@ -116,7 +120,6 @@ MakeMisdreavusAppear:
 	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_FIRST_ENCOUNTER
 	iffalse .first
 	showtext ItsTheMisdreavusText
-	scall IsMisdreavusSearchCompleted
 	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_COMPLETED
 	iftrue .finished
 	scall .disappear
@@ -142,26 +145,7 @@ MakeMisdreavusAppear:
     showtext MisdreavusHideAndSeekContinuesText
 	end
 .finished
-	readvar VAR_XCOORD
-	ifequal 2, .hole_left_2_2
-	ifequal 3, .hole_right_2_2
-	ifequal 4, .hole_left_4_2
-	ifequal 6, .hole_left_6_0
-	changeblock 6, 0, $47 ; hole right below picture on wall
-	sjump .falling
-	end
-.hole_left_2_2
-	changeblock 2, 2, $45 ; hole top left
-	sjump .falling
-.hole_right_2_2
-	changeblock 2, 2, $44 ; hole top right
-	sjump .falling
-.hole_left_4_2
-	changeblock 4, 2, $45 ; hole top left
-	sjump .falling
-.hole_left_6_0
-	changeblock 6, 0, $46 ; hole left below picture on wall
-.falling
+	scall AddHoleInFloor
 	special Special_FadeOutMusic
 	pause 15
 	showemote EMOTE_SHOCK, PLAYER, 15
@@ -176,18 +160,8 @@ MakeMisdreavusAppear:
 	warpcheck
 	end
 
-IsMisdreavusSearchCompleted:
-	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_STARTED
-	iffalse .done
-	checkevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_PHOTO
-	iftrue .done
-	checkevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_FIREPLACE
-	iftrue .done
-	checkevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_WOOD
-	iftrue .done
-	setevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_COMPLETED
-	end
-.done
+AddHoleInFloor:
+	changeblock 6, 0, $44 ; hole right below picture on wall
 	end
 
 ItsAMisdreavusText:
@@ -256,6 +230,6 @@ WoodenLogText:
 	done
 
 SenseMischievousPresenceText:
-	text "You feel a mis-"
+	text "You sense a mis-"
 	line "chievous presence…"
 	done
