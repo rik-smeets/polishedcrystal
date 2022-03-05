@@ -37,14 +37,6 @@ VioletOutskirtsMisdreavusCallback:
 	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_STARTED
 	iftrue .end
 	setevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_STARTED
-	random 2
-	ifequal 1, .set1
-	ifequal 2, .set2
-.set1
-	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_FIREPLACE
-	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_PHOTO
-	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_WOOD
-.set2
 	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_FIREPLACE
 	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_PHOTO
 	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_WOOD
@@ -57,7 +49,7 @@ WoodenLogScript:
 	iffalse .done
 	checkevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_WOOD
 	iffalse .done
-	moveobject HIDDEN_MISDREAVUS, 0, 7
+	moveobject HIDDEN_MISDREAVUS, 2,1
 	clearevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_WOOD
 	sjump MakeMisdreavusAppear
 .done
@@ -111,24 +103,33 @@ MakeMisdreavusAppear:
 	pause 15
 	special Special_FadeInQuickly
 	special RestartMapMusic
-	showtext ItsMisdreavusText
 	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_FIRST_ENCOUNTER
 	iffalse .first
+	showtext ItsTheMisdreavusText
 	scall IsMisdreavusSearchCompleted
 	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_COMPLETED
 	iftrue .finished
-	sjump .disappear
+	scall .disappear
+	sjump .hideandseekcontinues
 .first
+	showtext ItsAMisdreavusText
 	setevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_FIRST_ENCOUNTER
 	showemote EMOTE_HAPPY, HIDDEN_MISDREAVUS, 15
 	showtext MisdreavusHappyText
+	scall .disappear
+	sjump .hideandseek
 .disappear
 	special Special_FadeBlackQuickly
 	disappear HIDDEN_MISDREAVUS
 	cry MISDREAVUS
 	pause 15
 	special Special_FadeInQuickly
-	showtext MisdreavusContinuePlayingText
+	end
+.hideandseek
+	showtext MisdreavusHideAndSeekText
+	end
+.hideandseekcontinues
+    showtext MisdreavusHideAndSeekContinuesText
 	end
 .finished
 	readvar VAR_XCOORD
@@ -138,20 +139,6 @@ MakeMisdreavusAppear:
 	ifequal 6, .hole_left_6_0
 	changeblock 6, 0, $47 ; hole right below picture on wall
 	sjump .falling
-	; showemote EMOTE_HEART, HIDDEN_MISDREAVUS, 15
-	; showtext MisdreavusFinishedPlayingText
-	; cry MISDREAVUS
-	; opentext
-	; writetext MisdreavusWantToJoinText
-	; yesorno
-	; iffalse .misdreavus_leaves
-	; writetext OnlyOneWayText
-	; waitbutton
-	; closetext
-	; loadwildmon MISDREAVUS, 27
-	; startbattle
-	; disappear HIDDEN_MISDREAVUS
-	; reloadmapafterbattle
 	end
 .hole_left_2_2
 	changeblock 2, 2, $45 ; hole top left
@@ -163,7 +150,7 @@ MakeMisdreavusAppear:
 	changeblock 4, 2, $45 ; hole top left
 	sjump .falling
 .hole_left_6_0
-	changeblock 6, 0, $46 ; hole top left below picture on wall
+	changeblock 6, 0, $46 ; hole left below picture on wall
 .falling
 	special Special_FadeOutMusic
 	pause 15
@@ -177,15 +164,6 @@ MakeMisdreavusAppear:
 	showemote EMOTE_HAPPY, HIDDEN_MISDREAVUS, 30
 	pause 15
 	warpcheck
-	end
-.misdreavus_leaves
-	closetext
-	special Special_FadeBlackQuickly
-	disappear HIDDEN_MISDREAVUS
-	cry MISDREAVUS
-	pause 15
-	special Special_FadeInQuickly
-	showtext MisdreavusLeftText
 	end
 
 IsMisdreavusSearchCompleted:
@@ -202,47 +180,29 @@ IsMisdreavusSearchCompleted:
 .done
 	end
 
-OnlyOneWayText:
-	text "There's only one"
-	line "way…"
+ItsAMisdreavusText:
+	text "It's a Misdreavus!"
+	done
 
-	para "Time to catch"
-	line "it!"
+ItsTheMisdreavusText:
+	text "There's the Mis-"
+	line "dreavus again!"
 	done
 
 MisdreavusHappyText:
 	text "It seems to be"
-	line "happy!"
+	line "having fun."
 	done
 
-MisdreavusContinuePlayingText:
+MisdreavusHideAndSeekText:
 	text "Looks like it's"
 	line "playing hide and"
 	cont "seek!"
 	done
 
-MisdreavusWantToJoinText:
-	text "Oh? Misdreavus"
-	line "wants to join"
-	cont "your party!"
-
-	para "Will you take"
-	line "it with you?"
-	done
-
-MisdreavusLeftText:
-	text "Misdreavus went"
-	line "back into the"
-	cont "wild."
-	done
-
-MisdreavusFinishedPlayingText:
-	text "It seems to be"
-	line "very happy!"
-
-	para "All it wanted was"
-	line "to have a bit of"
-	cont "fun."
+MisdreavusHideAndSeekContinuesText:
+	text "It's still playing"
+	line "hide and seek!"
 	done
 
 FireplaceText:
@@ -263,11 +223,6 @@ FamilyPhotoText:
 	para "It's probably just"
 	line "an optical illu-"
 	cont "sion."
-	done
-
-ItsMisdreavusText:
-	text "It's the mischie-"
-	line "vous Misdreavus!"
 	done
 
 OldBooksText:
