@@ -1585,3 +1585,7 @@ SECTION "Window Stack", WRAMX
 
 wWindowStack:: ds $1000 - 1
 wWindowStackBottom:: db
+
+; reorganize when it's OK to introduce breaking saves
+SECTION "NEW MAP TRIGGERS", WRAMX
+wVioletOutskirtsAbandonedHouseSceneID:: db

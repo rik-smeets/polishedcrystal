@@ -1,5 +1,6 @@
 VioletOutskirtsAbandonedHouse_MapScriptHeader:
 	def_scene_scripts
+	scene_script VioletOutskirtsAbandonedHouseTrigger0
 
 	def_callbacks
 	callback MAPCALLBACK_OBJECTS, VioletOutskirtsMisdreavusCallback
@@ -31,6 +32,15 @@ VioletOutskirtsAbandonedHouse_MapScriptHeader:
 
 	object_const_def
 	const HIDDEN_MISDREAVUS
+
+VioletOutskirtsAbandonedHouseTrigger0:
+	sdefer SenseMischievousPresence
+	end
+
+SenseMischievousPresence:
+	showtext SenseMischievousPresenceText
+	setscene $2
+	end
 
 VioletOutskirtsMisdreavusCallback:
 	disappear HIDDEN_MISDREAVUS
@@ -243,4 +253,9 @@ AncientIncenseBurnerText:
 WoodenLogText:
 	text "A wooden log lies"
 	line "on the floor."
+	done
+
+SenseMischievousPresenceText:
+	text "You feel a mis-"
+	line "chievous presence…"
 	done
