@@ -7,6 +7,7 @@ VioletOutskirtsHouseOfMemories_MapScriptHeader:
 	def_warp_events
 	warp_event  4,  9, VIOLET_OUTSKIRTS, 2
 	warp_event  5,  9, VIOLET_OUTSKIRTS, 2
+	warp_event  0,  2, VIOLET_OUTSKIRTS_HOUSE_OF_MEMORIES_B1F, 2
 
 	def_coord_events
 
@@ -18,9 +19,16 @@ VioletOutskirtsHouseOfMemories_MapScriptHeader:
 	object_const_def
 
 HouseOfMemoriesUnderground:
+    checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_COMPLETED
+    iffalse .end
+	changeblock 0, 2, $A2 ; staircase down
+.end
 	endcallback
 
 ChannelerScript:
-	jumpthistextfaceplayer
-	text "Hello."
+    showtext HelloText
+	end
+
+HelloText:
+	text "Hello"
 	done

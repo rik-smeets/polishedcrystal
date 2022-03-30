@@ -8,12 +8,7 @@ VioletOutskirtsAbandonedHouse_MapScriptHeader:
 	def_warp_events
 	warp_event  3,  7, VIOLET_OUTSKIRTS, 1
 	warp_event  4,  7, VIOLET_OUTSKIRTS, 1
-	warp_event  2,  2, SOUL_HOUSE_B1F, 1
-	warp_event  3,  2, SOUL_HOUSE_B1F, 1
-	warp_event  4,  2, SOUL_HOUSE_B1F, 1
-	warp_event  4,  2, SOUL_HOUSE_B1F, 1
-	warp_event  6,  1, SOUL_HOUSE_B1F, 1
-	warp_event  7,  1, SOUL_HOUSE_B1F, 1
+	warp_event  7,  1, VIOLET_OUTSKIRTS_HOUSE_OF_MEMORIES_B1F, 1 ; hole
 
 	def_coord_events
 
@@ -45,12 +40,15 @@ SenseMischievousPresence:
 VioletOutskirtsMisdreavusCallback:
 	disappear HIDDEN_MISDREAVUS
 	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_COMPLETED
-	iftrue AddHoleInFloor
+	iftrue .hole
 	checkevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_STARTED
 	iftrue .end
 	setevent EVENT_VIOLET_OUTSKIRTS_MISDREAVUS_SEARCH_STARTED
 	setevent EVENT_VIOLET_OUTSKIRTS_HIDDEN_MISDREAVUS_FIREPLACE
 .end
+	endcallback
+.hole
+	scall AddHoleInFloor
 	endcallback
 
 WoodenLogScript:

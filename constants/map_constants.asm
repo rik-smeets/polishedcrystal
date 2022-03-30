@@ -250,6 +250,7 @@ ENDM
 	map_const VIOLET_OUTSKIRTS,                           20,  8 ; 14
 	map_const VIOLET_OUTSKIRTS_ABANDONED_HOUSE,            4,  4 ; 15
 	map_const VIOLET_OUTSKIRTS_HOUSE_OF_MEMORIES,          5,  5 ; 16
+	map_const VIOLET_OUTSKIRTS_HOUSE_OF_MEMORIES_B1F,      11, 4 ; 17
 
 	newgroup                                                     ; 11
 	map_const ROUTE_34,                                   10, 27 ;  1

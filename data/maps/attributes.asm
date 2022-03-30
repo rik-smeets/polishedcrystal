@@ -985,3 +985,4 @@ ENDM
 	map_attributes ValenciaPort, VALENCIA_PORT, $0, 0
 	map_attributes VioletOutskirtsAbandonedHouse, VIOLET_OUTSKIRTS_ABANDONED_HOUSE, $0, 0
 	map_attributes VioletOutskirtsHouseOfMemories, VIOLET_OUTSKIRTS_HOUSE_OF_MEMORIES, $0, 0
+	map_attributes VioletOutskirtsHouseOfMemoriesB1F, VIOLET_OUTSKIRTS_HOUSE_OF_MEMORIES_B1F, $6c, 0

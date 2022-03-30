@@ -297,6 +297,10 @@ SECTION "HouseOfMemories_BlockData", ROMX
 VioletOutskirtsHouseOfMemories_BlockData:
 	INCBIN "maps/HouseOfMemories.ablk.lz"
 
+SECTION "HouseOfMemoriesB1F_BlockData", ROMX
+VioletOutskirtsHouseOfMemoriesB1F_BlockData:
+	INCBIN "maps/HouseOfMemoriesB1F.ablk.lz"
+
 SECTION "RuinsOfAlphOutside_BlockData", ROMX
 RuinsOfAlphOutside_BlockData:
 	INCBIN "maps/RuinsOfAlphOutside.ablk.lz"

@@ -126,6 +126,7 @@ SECTION "Violet Outskirts Scripts", ROMX
 INCLUDE "maps/VioletOutskirts.asm"
 INCLUDE "maps/AbandonedHouse.asm"
 INCLUDE "maps/HouseOfMemories.asm"
+INCLUDE "maps/HouseOfMemoriesB1F.asm"
 
 
 SECTION "Ruins of Alph Scripts", ROMX
